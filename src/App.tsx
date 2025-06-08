@@ -29,7 +29,6 @@ const App = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 24,
             boxSizing: 'border-box',
             background: `linear-gradient(
               to bottom, 
