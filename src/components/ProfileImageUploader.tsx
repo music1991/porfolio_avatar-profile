@@ -8,6 +8,7 @@ import {
   CheckOutlined,
   CloseOutlined,
   SmileOutlined,
+  SyncOutlined,
 } from '@ant-design/icons';
 import Cropper from 'react-easy-crop';
 import getCroppedImg from '../helpers';
@@ -43,6 +44,8 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
+  const [cameraReady, setCameraReady] = useState(false)
+
   useEffect(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (saved) setImageUrl(saved);
@@ -52,6 +55,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     const startCamera = async () => {
       try {
         if (cameraModalVisible && videoRef.current) {
+          setCameraReady(false);
           const stream = await navigator.mediaDevices.getUserMedia({ video: true });
           streamRef.current = stream;
           videoRef.current.srcObject = stream;
@@ -148,6 +152,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   const closeCameraModal = () => {
     setCameraModalVisible(false);
     setCapturedImage(null);
+    setCameraReady(false);
   };
 
   const onCropComplete = (_: any, croppedAreaPixels: any) => {
@@ -188,9 +193,15 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     }
   }, [avatarModalVisible, avatarType]);
 
+  const iconStyle = {
+    fontSize: 28,
+    fontWeight: 'bold',  // No afecta el grosor del icono SVG, pero podemos usar un icono diferente si quieres grosor real
+    color: 'white',      // Contraste con fondo degradado
+  };
+
 
   return (
-    <div style={{ textAlign: 'center', padding: 24 }}>
+    <div style={{ textAlign: 'center'}}>
       {loading ?
         <Spin spinning={loading} /> :
         <>
@@ -205,7 +216,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             }}
           >
             <Avatar
-              size={128}
+              size={160}
               src={imageUrl || undefined}
               icon={!imageUrl ? <UserOutlined style={{ fontSize: 90, lineHeight: '128px' }} /> : undefined}
               style={{
@@ -213,12 +224,13 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
                 justifyContent: 'center',
                 alignItems: 'center',
                 lineHeight: 1,
+                background: 'linear-gradient(45deg, #d3d3d3, #eaeaea, #cfcfcf)',
               }}
             />
           </div>
           <div>
             <div style={{ marginBottom: 70 }}>
-              <Button icon={<UploadOutlined />} style={{ marginRight: 8 }} onClick={() => setSelectionModalVisible(true)}>
+              <Button icon={<SyncOutlined />} style={{ marginRight: 8 }} onClick={() => setSelectionModalVisible(true)}>
                 {t('change')}
               </Button>
               <Button danger icon={<DeleteOutlined />} onClick={handleRemove}>
@@ -229,9 +241,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             <Button
               type="primary"
               shape="circle"
-              icon={<CheckOutlined />}
+              icon={<CheckOutlined style={iconStyle} />}
               size="large"
-              style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+              className="custom-button"
               onClick={onFinish}
             />
             <div
@@ -266,7 +278,19 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         title={t('selectOption')}
         className={'modal-selection'}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+            width: '80%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto',
+            paddingTop: 20,
+            paddingBottom: 20
+          }}
+        >
           <Button
             block
             icon={<UploadOutlined />}
@@ -332,6 +356,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             muted
             playsInline
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onCanPlay={() => setCameraReady(true)}
           />
         </div>
         <canvas ref={canvasRef} width={320} height={320} style={{ display: 'none' }} />
@@ -339,6 +364,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           icon={<CameraOutlined />}
           onClick={capturePhoto}
           style={{ marginTop: 12, width: '100%', height: 40 }}
+          disabled={!cameraReady}
         >
           {t('capture')}
         </Button>
@@ -353,7 +379,17 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         className={'edit-photo'}
         centered
       >
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1' }}>
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: 350,              // o 250, ajustá a gusto
+            aspectRatio: '1 / 1',
+            margin: '0 auto',
+            borderRadius: '16px',      // <-- redondeado
+            overflow: 'hidden',
+          }}
+        >
           <Cropper
             image={capturedImage!}
             crop={crop}
@@ -372,19 +408,25 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           step={0.1}
           value={zoom}
           onChange={setZoom}
-          style={{ marginTop: 10 }}
+          className="zoom-slider"
+          style={{ marginTop: 40, marginBottom: 40 }}
         />
-        <Space style={{ marginTop: 12, width: '100%', justifyContent: 'center' }}>
+
+        <Space style={{ width: '100%', justifyContent: 'center' }}>
           <Button
             type="primary"
             icon={<CheckOutlined />}
             onClick={saveCroppedImage}
           >
-           {t('usePhoto')}
+            {t('usePhoto')}
           </Button>
           <Button
             icon={<CloseOutlined />}
-            onClick={() => setCapturedImage(null)}
+            onClick={() => {
+              setCapturedImage(null);
+              setCameraModalVisible(false);  // cerrar modal cámara también
+              setCameraModalVisible(true)
+            }}
           >
             {t('cancel')}
           </Button>

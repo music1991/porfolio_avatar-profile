@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useLanguage } from '../context/LanguageContext';
+import '../index.css'
 
 interface InteractiveAvatarProps {
 	imageUrl: string | null;
@@ -37,7 +38,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 				style={{
 					marginBottom: 24,
 					color: '#333',
-					fontSize: 20,
+					fontSize: 15,
 					fontWeight: 400,
 					textShadow: '0 0 3px rgba(0,0,0,0.15)',
 					userSelect: 'none',
@@ -60,17 +61,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 				onMouseLeave={() => setPressing(false)}
 				onTouchStart={() => setPressing(true)}
 				onTouchEnd={() => setPressing(false)}
-				style={{
-					cursor: 'pointer',
-					borderRadius: '50%',
-					padding: 6,
-					background: 'white',
-					boxShadow: pressing
-						? '0 0 10px 3px rgba(100, 108, 255, 0.6)'
-						: '0 4px 12px rgba(0,0,0,0.1)',
-					transition: 'all 150ms ease',
-					display: 'inline-block',
-				}}
+  className="interactive-avatar"
 			>
 				<Avatar
 					size={180}
@@ -81,7 +72,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 						justifyContent: 'center',
 						alignItems: 'center',
 						lineHeight: 1,
-						
+						background: 'linear-gradient(45deg, #d3d3d3, #eaeaea, #cfcfcf)',
 					}}
 				/>
 			</div>

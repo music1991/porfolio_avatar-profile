@@ -99,3 +99,75 @@ button:focus:not(:focus-visible) {
   box-shadow: none;
 }
 
+.custom-button {
+  background: linear-gradient(45deg, #7aa9b9, #8dbde8, #7fb6d1); /* tonos azul grisáceos más oscuros */
+  border: none;
+  box-shadow: 0 4px 12px rgba(90, 120, 150, 0.7); /* sombra más marcada */
+  transition: all 0.2s ease;
+  cursor: pointer;
+  color: white; /* para que el texto o icono se vea bien */
+}
+
+.custom-button:hover {
+  box-shadow: 0 6px 16px rgba(90, 120, 150, 0.9);
+  transform: scale(1.05);
+}
+
+.custom-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 6px rgba(90, 120, 150, 0.4);
+}
+
+.zoom-slider .ant-slider-handle {
+  width: 30px;
+  height: 30px;
+  margin-top: -10px; /* Centrado vertical en la pista */
+  background-color: #1890ff;
+  border-radius: 50%;           /* <--- esto hace el círculo perfecto */
+  border: 2px solid white;
+  box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.3);
+}
+
+.zoom-slider .ant-slider-handle::after {
+  display: none !important;  /* Oculta el pseudo-elemento blanco interno */
+}
+
+.interactive-avatar {
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 6px;
+  background: white;
+  transition: all 150ms ease;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.interactive-avatar:hover {
+  box-shadow: 0 0 12px 4px rgba(100, 108, 255, 0.3);
+  transform: scale(1.03);
+}
+
+.interactive-avatar:active {
+  box-shadow: 0 0 10px 3px rgba(100, 108, 255, 0.6);
+  transform: scale(0.96);
+}
+
+.lang-option {
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: #000;
+  border-radius: 4px;
+  display: inline-block; /* para que el transform funcione bien */
+}
+
+.lang-option:hover {
+  transform: scale(1.1) translateY(-3px);
+  /* sombra sutil para dar efecto de elevación */
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.lang-option.active {
+  font-weight: bold;
+  color: #1890ff;
+}
