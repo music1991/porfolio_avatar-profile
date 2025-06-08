@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useLanguage } from '../context/LanguageContext';
@@ -11,7 +11,6 @@ interface InteractiveAvatarProps {
 
 const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick }) => {
 	const { t } = useLanguage();
-	const [pressing, setPressing] = useState(false);
 
 	return (
 		<div
@@ -33,11 +32,10 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 				userSelect: 'none',
 			}}
 		>
-			{/* Texto arriba */}
 			<div
 				style={{
 					marginBottom: 24,
-					color: '#333',
+					color: '#444',
 					fontSize: 15,
 					fontWeight: 400,
 					textShadow: '0 0 3px rgba(0,0,0,0.15)',
@@ -46,22 +44,9 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 			>
 				{t('pressToStart')}
 			</div>
-
-			{/* Avatar grande, con efecto touch */}
 			<div
-				onClick={() => {
-					setPressing(true);
-					setTimeout(() => {
-						setPressing(false);
-						onClick();
-					}, 150);
-				}}
-				onMouseDown={() => setPressing(true)}
-				onMouseUp={() => setPressing(false)}
-				onMouseLeave={() => setPressing(false)}
-				onTouchStart={() => setPressing(true)}
-				onTouchEnd={() => setPressing(false)}
-  className="interactive-avatar"
+				onClick={onClick}
+				className="interactive-avatar"
 			>
 				<Avatar
 					size={180}

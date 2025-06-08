@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import InteractiveAvatar from './components/InteractiveAvatar';
-import ProfileImageUploader from './components/ProfileImageUploader';
+import EditAvatar from './components/EditAvatar';
 import { LanguageProvider } from './context/LanguageContext';
 import { LanguageSelector } from './components/LanguajeSelector';
 
@@ -9,7 +9,7 @@ const App = () => {
   const [savedImage, setSavedImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('profile_image');
+    const saved = localStorage.getItem('avatar_image');
     setSavedImage(saved);
   }, [showUploader]);
 
@@ -42,7 +42,7 @@ const App = () => {
             overflow: 'hidden',
           }}
         >
-          <ProfileImageUploader
+          <EditAvatar
             initialImage={savedImage}
             onFinish={() => setShowUploader(false)}
           />

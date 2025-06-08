@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Spin, Avatar, Modal, message, Space, Slider, Grid } from 'antd';
+import { Button, Spin, Avatar, Modal, Space, Slider, Grid } from 'antd';
 import {
   UploadOutlined,
   DeleteOutlined,
@@ -16,15 +16,16 @@ import { createAvatar } from '@dicebear/core';
 import { avataaars, bottts, pixelArt } from '@dicebear/collection';
 import '../index.css'
 import { useLanguage } from '../context/LanguageContext';
+import { toast, ToastContainer } from 'react-toastify';
 
-const LOCAL_STORAGE_KEY = 'profile_image';
+const LOCAL_STORAGE_KEY = 'avatar_image';
 
-interface ProfileImageUploaderProps {
+interface EditAvatarProps {
   initialImage: string | null;
   onFinish: () => void;
 }
 
-const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
+const EditAvatar: React.FC<EditAvatarProps> = ({
   initialImage,
   onFinish,
 }) => {
@@ -44,7 +45,31 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
-  const [cameraReady, setCameraReady] = useState(false)
+  const [cameraReady, setCameraReady] = useState(false);
+
+  const { useBreakpoint } = Grid;
+  const screens = useBreakpoint();
+  const [avatarModalVisible, setAvatarModalVisible] = useState(false);
+  const [avatarType, setAvatarType] = useState<'avataaars' | 'pixel-art' | 'bottts'>('avataaars');
+  const [avatarOptions, setAvatarOptions] = useState<string[]>([]);
+
+  const generateRandomAvatar = (type: 'avataaars' | 'pixel-art' | 'bottts', seed?: string) => {
+    const options = {
+      seed: seed || Math.random().toString(36).substring(2),
+      size: 128,
+    };
+
+    switch (type) {
+      case 'avataaars':
+        return createAvatar(avataaars, options).toDataUri();
+      case 'pixel-art':
+        return createAvatar(pixelArt, options).toDataUri();
+      case 'bottts':
+        return createAvatar(bottts, options).toDataUri();
+      default:
+        return createAvatar(avataaars, options).toDataUri();
+    }
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -61,9 +86,8 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-      } catch (err) {
-        console.error('Error al abrir cámara:', err);
-        message.error('No se pudo acceder a la cámara.');
+      } catch (err) {        
+        toast.error('No se pudo acceder a la cámara.');
         setCameraModalVisible(false);
       }
     };
@@ -113,7 +137,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
       setCapturedImage(null);
     } catch (e) {
       console.error('Error recortando imagen:', e);
-      message.error('No se pudo recortar la imagen.');
+      toast.error('No se pudo recortar la imagen.');
     }
   };
 
@@ -121,7 +145,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      message.error('Selecciona una imagen válida.');
+      toast.error('Selecciona una imagen válida.');
       return;
     }
     const reader = new FileReader();
@@ -159,31 +183,6 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
-  const { useBreakpoint } = Grid;
-  const screens = useBreakpoint();
-  const [avatarModalVisible, setAvatarModalVisible] = useState(false);
-  const [avatarType, setAvatarType] = useState<'avataaars' | 'pixel-art' | 'bottts'>('avataaars');
-
-  const generateRandomAvatar = (type: 'avataaars' | 'pixel-art' | 'bottts', seed?: string) => {
-    const options = {
-      seed: seed || Math.random().toString(36).substring(2), // semilla aleatoria
-      size: 128,
-    };
-
-    switch (type) {
-      case 'avataaars':
-        return createAvatar(avataaars, options).toDataUri();
-      case 'pixel-art':
-        return createAvatar(pixelArt, options).toDataUri();
-      case 'bottts':
-        return createAvatar(bottts, options).toDataUri();
-      default:
-        return createAvatar(avataaars, options).toDataUri();
-    }
-  };
-
-  const [avatarOptions, setAvatarOptions] = useState<string[]>([]);
-
   useEffect(() => {
     if (avatarModalVisible) {
       const newAvatars = Array.from({ length: 12 }, () =>
@@ -195,10 +194,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
 
   const iconStyle = {
     fontSize: 28,
-    fontWeight: 'bold',  // No afecta el grosor del icono SVG, pero podemos usar un icono diferente si quieres grosor real
-    color: 'white',      // Contraste con fondo degradado
+    fontWeight: 'bold',
+    color: 'white',
   };
-
 
   return (
     <div style={{ textAlign: 'center'}}>
@@ -249,7 +247,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             <div
               style={{
                 marginTop: 10,
-                color: '#333',
+                color: '#444',
                 fontSize: 13,
                 fontWeight: 400,
                 textShadow: '0 0 3px rgba(0,0,0,0.15)',
@@ -270,7 +268,6 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         onChange={handleFileChange}
       />
 
-      {/* Modal de selección de opción */}
       <Modal
         open={selectionModalVisible}
         onCancel={closeSelectionModal}
@@ -327,7 +324,6 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         </div>
       </Modal>
 
-      {/* Modal de captura de foto */}
       <Modal
         open={cameraModalVisible}
         onCancel={closeCameraModal}
@@ -339,7 +335,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           style={{
             width: '100%',
             maxWidth: 320,
-            aspectRatio: '1 / 1',  // Mantiene relación 1:1
+            aspectRatio: '1 / 1',
             border: '2px solid #1890ff',
             borderRadius: '50%',
             overflow: 'hidden',
@@ -370,7 +366,6 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         </Button>
       </Modal>
 
-      {/* Modal de vista previa y edición */}
       <Modal
         open={!!capturedImage}
         onCancel={() => setCapturedImage(null)}
@@ -383,10 +378,10 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           style={{
             position: 'relative',
             width: '100%',
-            maxWidth: 350,              // o 250, ajustá a gusto
+            maxWidth: 350,
             aspectRatio: '1 / 1',
             margin: '0 auto',
-            borderRadius: '16px',      // <-- redondeado
+            borderRadius: '16px',
             overflow: 'hidden',
           }}
         >
@@ -424,8 +419,8 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             icon={<CloseOutlined />}
             onClick={() => {
               setCapturedImage(null);
-              setCameraModalVisible(false);  // cerrar modal cámara también
-              setCameraModalVisible(true)
+              setCameraModalVisible(false);
+              setCameraModalVisible(true);
             }}
           >
             {t('cancel')}
@@ -433,7 +428,6 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         </Space>
       </Modal>
 
-      {/* Modal de selección de avatares */}
       <Modal
         open={avatarModalVisible}
         onCancel={() => setAvatarModalVisible(false)}
@@ -467,10 +461,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
               src={avatar}
               alt={`Avatar ${index}`}
               onClick={() => {
-                setImageUrl(avatar); // usar el avatar ya generado
+                setImageUrl(avatar);
                 localStorage.setItem(LOCAL_STORAGE_KEY, avatar);
                 setAvatarModalVisible(false);
-                message.success('Avatar seleccionado!');
               }}
               style={{
                 width: '100%',
@@ -482,8 +475,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           ))}
         </div>
       </Modal>
+      <ToastContainer position="top-right" autoClose={1700} />
     </div>
   );
 };
 
-export default ProfileImageUploader;
+export default EditAvatar;

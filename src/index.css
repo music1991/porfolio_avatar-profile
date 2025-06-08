@@ -121,15 +121,15 @@ button:focus:not(:focus-visible) {
 .zoom-slider .ant-slider-handle {
   width: 30px;
   height: 30px;
-  margin-top: -10px; /* Centrado vertical en la pista */
+  margin-top: -10px;
   background-color: #1890ff;
-  border-radius: 50%;           /* <--- esto hace el círculo perfecto */
+  border-radius: 50%;
   border: 2px solid white;
   box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.3);
 }
 
 .zoom-slider .ant-slider-handle::after {
-  display: none !important;  /* Oculta el pseudo-elemento blanco interno */
+  display: none !important;
 }
 
 .interactive-avatar {
@@ -156,14 +156,13 @@ button:focus:not(:focus-visible) {
   padding: 4px 8px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  color: #000;
+  color: #444;
   border-radius: 4px;
-  display: inline-block; /* para que el transform funcione bien */
+  display: inline-block;
 }
 
 .lang-option:hover {
   transform: scale(1.1) translateY(-3px);
-  /* sombra sutil para dar efecto de elevación */
   text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
