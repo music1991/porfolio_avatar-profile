@@ -199,7 +199,7 @@ const EditAvatar: React.FC<EditAvatarProps> = ({
   };
 
   return (
-    <div style={{ textAlign: 'center'}}>
+    <div style={{ textAlign: 'center', maxWidth: '100%', maxHeight: '100%'}}>
       {loading ?
         <Spin spinning={loading} /> :
         <>

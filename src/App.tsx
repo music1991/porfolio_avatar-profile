@@ -24,21 +24,25 @@ const App = () => {
       {showUploader ? (
         <div
           style={{
-            position: 'fixed',
-            inset: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            boxSizing: 'border-box',
-            background: `linear-gradient(
-              to bottom, 
-              #a3d8f4 0%,       
-              #c8b6ff 40%,      
-              #e0e7ff 70%,      
-              #f9fafb 90%,      
-              white 100%
-            )`,
-            overflow: 'hidden',
+  position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+      boxSizing: 'border-box',
+      background: `linear-gradient(
+        to bottom, 
+        #a3d8f4 0%,       
+        #c8b6ff 40%,      
+        #e0e7ff 70%,      
+        #f9fafb 90%,      
+        white 100%
+      )`,
+      overflow: 'hidden',
           }}
         >
           <EditAvatar
