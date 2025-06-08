@@ -274,6 +274,7 @@ const EditAvatar: React.FC<EditAvatarProps> = ({
         footer={null}
         title={t('selectOption')}
         className={'modal-selection'}
+        mask={false} 
       >
         <div
           style={{
@@ -330,6 +331,7 @@ const EditAvatar: React.FC<EditAvatarProps> = ({
         footer={null}
         title={t('photo')}
         className={'modal-photo'}
+        mask={false} 
       >
         <div
           style={{
@@ -373,6 +375,7 @@ const EditAvatar: React.FC<EditAvatarProps> = ({
         title={t('edit')}
         className={'edit-photo'}
         centered
+        mask={false} 
       >
         <div
           style={{
@@ -434,6 +437,7 @@ const EditAvatar: React.FC<EditAvatarProps> = ({
         footer={null}
         title={t('avatar')}
         width="80%"
+        mask={false} 
       >
         <div
           style={{
@@ -475,7 +479,7 @@ const EditAvatar: React.FC<EditAvatarProps> = ({
           ))}
         </div>
       </Modal>
-      <ToastContainer position="top-right" autoClose={1700} />
+      <ToastContainer position="bottom-right" autoClose={1700} style={{ zIndex: 9999 }} />
     </div>
   );
 };
