@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { useLanguage } from '../context/LanguageContext';
 
 interface InteractiveAvatarProps {
 	imageUrl: string | null;
@@ -8,6 +9,7 @@ interface InteractiveAvatarProps {
 }
 
 const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick }) => {
+	const { t } = useLanguage();
 	const [pressing, setPressing] = useState(false);
 
 	return (
@@ -41,7 +43,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 					userSelect: 'none',
 				}}
 			>
-				press to start
+				{t('pressToStart')}
 			</div>
 
 			{/* Avatar grande, con efecto touch */}
@@ -62,7 +64,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 					cursor: 'pointer',
 					borderRadius: '50%',
 					padding: 6,
-					background: pressing ? 'rgba(100, 108, 255, 0.3)' : 'transparent',
+					background: 'white',
 					boxShadow: pressing
 						? '0 0 10px 3px rgba(100, 108, 255, 0.6)'
 						: '0 4px 12px rgba(0,0,0,0.1)',
@@ -79,7 +81,7 @@ const InteractiveAvatar: React.FC<InteractiveAvatarProps> = ({ imageUrl, onClick
 						justifyContent: 'center',
 						alignItems: 'center',
 						lineHeight: 1,
-
+						
 					}}
 				/>
 			</div>

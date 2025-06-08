@@ -1,0 +1,21 @@
+{
+  "languageSelector": "ES | EN | DE",
+  "pressToStart": "drücken Sie zum Starten",
+  "pressToFinish": "Drücken zum Beenden",
+  "change": "Ändern",
+  "delete": "Löschen",
+  "selectOption": "Option auswählen",
+  "searchFile": "Datei suchen",
+  "takePhoto": "Foto machen",
+  "chooseAvatar": "Avatar wählen",
+  "photo": "Foto",
+  "capture": "Aufnehmen",
+  "edit": "Bearbeiten",
+  "usePhoto": "Foto verwenden",
+  "cancel": "Abbrechen",
+  "avatar": "Avatar",
+  "caricature": "Karikatur",
+  "pixel": "Pixel",
+  "robots": "Roboter",
+  "avatarSelected": "Avatar ausgewählt!"
+}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import InteractiveAvatar from './components/InteractiveAvatar';
 import ProfileImageUploader from './components/ProfileImageUploader';
+import { LanguageProvider } from './context/LanguageContext';
+import { LanguageSelector } from './components/LanguajeSelector';
 
 const App = () => {
   const [showUploader, setShowUploader] = useState(false);
@@ -8,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem('profile_image');
-    if (saved) setSavedImage(saved);
+    setSavedImage(saved);
   }, [showUploader]);
 
   const handleAvatarClick = () => {
@@ -17,12 +19,13 @@ const App = () => {
 
 
   return (
-    <>
+    <LanguageProvider>
+      <LanguageSelector />
       {showUploader ? (
         <div
           style={{
             position: 'fixed',
-            inset: 0, // equivale a top:0, bottom:0, left:0, right:0 para ocupar toda la pantalla sin scroll
+            inset: 0,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -36,7 +39,7 @@ const App = () => {
               #f9fafb 90%,      
               white 100%
             )`,
-            overflow: 'hidden', // evita scroll por contenido sobrante
+            overflow: 'hidden',
           }}
         >
           <ProfileImageUploader
@@ -47,7 +50,7 @@ const App = () => {
       ) : (
         <InteractiveAvatar imageUrl={savedImage} onClick={handleAvatarClick} />
       )}
-    </>
+    </LanguageProvider>
   );
 };
 

@@ -14,6 +14,7 @@ import getCroppedImg from '../helpers';
 import { createAvatar } from '@dicebear/core';
 import { avataaars, bottts, pixelArt } from '@dicebear/collection';
 import '../index.css'
+import { useLanguage } from '../context/LanguageContext';
 
 const LOCAL_STORAGE_KEY = 'profile_image';
 
@@ -26,6 +27,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   initialImage,
   onFinish,
 }) => {
+  const { t } = useLanguage();
   const [imageUrl, setImageUrl] = useState<string | null>(initialImage);
   const [loading, setLoading] = useState(false);
   const [selectionModalVisible, setSelectionModalVisible] = useState(false);
@@ -217,10 +219,10 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           <div>
             <div style={{ marginBottom: 70 }}>
               <Button icon={<UploadOutlined />} style={{ marginRight: 8 }} onClick={() => setSelectionModalVisible(true)}>
-                Change
+                {t('change')}
               </Button>
               <Button danger icon={<DeleteOutlined />} onClick={handleRemove}>
-                Delete
+                {t('delete')}
               </Button>
             </div>
 
@@ -242,7 +244,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
                 userSelect: 'none',
               }}
             >
-              press to finish
+              {t('pressToFinish')}
             </div>
           </div>
         </>
@@ -261,7 +263,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         open={selectionModalVisible}
         onCancel={closeSelectionModal}
         footer={null}
-        title="Select option"
+        title={t('selectOption')}
         className={'modal-selection'}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -274,7 +276,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             }}
             style={{ height: 50, fontSize: 16 }}
           >
-            Search File
+            {t('searchFile')}
           </Button>
           <Button
             block
@@ -285,7 +287,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             }}
             style={{ height: 50, fontSize: 16 }}
           >
-            Take photo
+            {t('takePhoto')}
           </Button>
           <Button
             block
@@ -296,7 +298,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             }}
             style={{ height: 50, fontSize: 16 }}
           >
-            Choose Avatar
+            {t('chooseAvatar')}
           </Button>
         </div>
       </Modal>
@@ -306,7 +308,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         open={cameraModalVisible}
         onCancel={closeCameraModal}
         footer={null}
-        title="Photo"
+        title={t('photo')}
         className={'modal-photo'}
       >
         <div
@@ -338,7 +340,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           onClick={capturePhoto}
           style={{ marginTop: 12, width: '100%', height: 40 }}
         >
-          Capture
+          {t('capture')}
         </Button>
       </Modal>
 
@@ -347,7 +349,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         open={!!capturedImage}
         onCancel={() => setCapturedImage(null)}
         footer={null}
-        title="Edit"
+        title={t('edit')}
         className={'edit-photo'}
         centered
       >
@@ -378,13 +380,13 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             icon={<CheckOutlined />}
             onClick={saveCroppedImage}
           >
-            Use photo
+           {t('usePhoto')}
           </Button>
           <Button
             icon={<CloseOutlined />}
             onClick={() => setCapturedImage(null)}
           >
-            Cancel
+            {t('cancel')}
           </Button>
         </Space>
       </Modal>
@@ -394,7 +396,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         open={avatarModalVisible}
         onCancel={() => setAvatarModalVisible(false)}
         footer={null}
-        title="Avatar"
+        title={t('avatar')}
         width="80%"
       >
         <div
@@ -405,9 +407,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
             flexDirection: screens.xs ? 'column' : 'row',
           }}
         >
-          <Button onClick={() => setAvatarType('avataaars')}>Caricature</Button>
-          <Button onClick={() => setAvatarType('pixel-art')}>Pixel</Button>
-          <Button onClick={() => setAvatarType('bottts')}>Robots</Button>
+          <Button onClick={() => setAvatarType('avataaars')}>{t('caricature')}</Button>
+          <Button onClick={() => setAvatarType('pixel-art')}>{t('pixel')}</Button>
+          <Button onClick={() => setAvatarType('bottts')}>{t('robots')}</Button>
         </div>
 
         <div style={{
